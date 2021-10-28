@@ -21,13 +21,6 @@ namespace BPR2_WebAPI.Controllers
             _context = context;
         }
 
-        // GET: api/<WhishlistsController>
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Wishlist>>> Get()
-        {
-            return await _context.Wishlists.ToListAsync();
-        }
-
         // GET api/<WhishlistsController>/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Wishlist>> GetWishlist(long id)
@@ -37,6 +30,21 @@ namespace BPR2_WebAPI.Controllers
             if (wishlist == null)
             {
                 return NotFound();
+            }
+
+            return wishlist;
+        }
+
+        // GET api/<WhishlistsController>/5
+        [Route("/customerWishLists/{customerId}")]
+        [HttpGet]
+        public ActionResult<List<Wishlist>> GetCustomerWishlists([FromRoute] long customerId)
+        {
+            var wishlist = _context.Wishlists.AsEnumerable().Where(p => p.ProfileId == customerId).ToList();
+
+            if (wishlist == null)
+            {
+                return new List<Wishlist>();
             }
 
             return wishlist;

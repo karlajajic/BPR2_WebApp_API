@@ -82,7 +82,7 @@ namespace BPR2_WebAPI.Controllers
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetProduct", new { id = product.Id }, product);
+            return Ok();
         }
 
         // DELETE: api/Products/5
