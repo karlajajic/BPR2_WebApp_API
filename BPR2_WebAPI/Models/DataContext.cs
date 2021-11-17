@@ -15,6 +15,7 @@ namespace BPR2_WebAPI.Models
         public DbSet<CustomerProfile> CustomerProfiles { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Wishlist> Wishlists { get; set; }
+        public DbSet<Newsletter> Newsletters { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -22,6 +23,7 @@ namespace BPR2_WebAPI.Models
             modelBuilder.Entity<CustomerProfile>().ToTable("customer_profiles");
             modelBuilder.Entity<Product>().ToTable("products");
             modelBuilder.Entity<Wishlist>().ToTable("wishlists");
+            modelBuilder.Entity<Newsletter>().ToTable("newsletters");
         }
 
 

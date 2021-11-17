@@ -19,6 +19,7 @@ namespace BPR2_WebAPI
                 SeedCredentials(context);
                 SeedCustomerProfiles(context);
                 SeedWishlists(context);
+                SeedNewsletters(context);
 
                 context.SaveChanges();
             }
@@ -34,18 +35,43 @@ namespace BPR2_WebAPI
             context.Products.AddRange(
                 new Product
                 {
-                    Name = "Milka-milk chocolate",
+                    Name = "Cacao",
+                    Barcode = 100988776,
+                    Category = "Flavoure",
+                    Brand = "Nestle",
+                    Price = 15.5
+                },
+                new Product
+                {
+                    Name = "Chocolate",
+                    Barcode = 123456789,
+                    Category = "Swwets",
+                    Brand = "Milka",
                     Price = 10.5
                 },
                 new Product
                 {
-                    Name = "Milka-dark chocolate",
-                    Price = 11.5
+                    Name = "Milk",
+                    Barcode = 364758192,
+                    Category = "Diary",
+                    Brand = "Arla",
+                    Price = 12
                 },
                 new Product
                 {
-                    Name = "Milka-wallnut chocolate ",
-                    Price = 12
+                    Name = "Nutella",
+                    Barcode = 129092837,
+                    Category = "Sweets",
+                    Brand = "Nutella",
+                    Price = 25
+                },
+                new Product
+                {
+                    Name = "Green Tea",
+                    Barcode = 144467829,
+                    Category = "Tea",
+                    Brand = "Harney & Sons",
+                    Price = 18
                 }
             );
         }
@@ -134,6 +160,31 @@ namespace BPR2_WebAPI
                 {
                     ProfileId = 4,
                     Name = "Karla sodas"
+                }
+            );
+        }
+
+        private static void SeedNewsletters(DataContext context)
+        {
+            if (context.Newsletters.Any())
+            {
+                return;   // DB has been seeded
+            }
+
+            context.Newsletters.AddRange(
+                new Newsletter
+                {
+                    Title = "Chocolate on sale",
+                    Details = "All chocolate on 20% on sale", 
+                    ValidFrom = DateTime.Now, 
+                    ValidTo = DateTime.Now.AddDays(12)
+                },
+                new Newsletter
+                {
+                    Title = "Wine on sale",
+                    Details = "Red wine on 10% on sale",
+                    ValidFrom = DateTime.Now,
+                    ValidTo = DateTime.Now.AddDays(12)
                 }
             );
         }

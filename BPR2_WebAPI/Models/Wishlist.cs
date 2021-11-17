@@ -10,5 +10,6 @@ namespace BPR2_WebAPI.Models
         public long Id { get; set; }
         public long ProfileId { get; set; }
         public string Name { get; set; }
+        public List<Product> Products { get; set; }
     }
 }

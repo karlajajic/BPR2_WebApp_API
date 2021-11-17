@@ -1,0 +1,61 @@
+﻿@*@model BPR2_WebApp.DTO.NewsletterDTO
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>@Html.DisplayFor(model => model.Title)</h1>
+<br />
+<div>
+    @if (Model.IsPublic)
+    {
+        <h4>Public</h4>
+    }
+    else
+    {
+        <h4>Private</h4>
+    }
+    <hr />
+</div>
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Title
+                </th>
+                <th>
+                    Year
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Movies != null)
+            {
+                @foreach (var item in Model.Movies)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Year)
+                        </td>
+                        <td>
+                            @using (Html.BeginForm("RemoveMovie", "Toplists", FormMethod.Post))
+                            {
+                                <input type="hidden" name="ToplistId" value="@Model.Id" />
+                                <input type="hidden" name="MovieId" value="@item.Id" />
+                                <button type="submit" class="btn btn-dark">Remove</button>
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+</div>*@
