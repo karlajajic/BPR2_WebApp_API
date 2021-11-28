@@ -49,7 +49,8 @@ namespace BPR2_WebAPI.Controllers
             _context.Newsletters.Add(newsletter);
             await _context.SaveChangesAsync();
 
-            return Ok();
+            var result = _context.Newsletters.FirstOrDefault(p => (p.Title == newsletter.Title && p.Details == newsletter.Details));
+            return Ok(result);
         }
 
         // PUT api/<NewslettersController>/5

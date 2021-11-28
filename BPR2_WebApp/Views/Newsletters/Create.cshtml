@@ -1,0 +1,50 @@
+﻿@model BPR2_WebApp.Models.NewsletterModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create</h1>
+
+<hr />
+<div class="container">
+    <form asp-action="Create">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="col mb-1">
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group row">
+                <label asp-for="ValidFrom" class="control-label col-sm-3"></label>
+                <div class="col-sm-9">
+                    <input asp-for="ValidFrom" class="form-control" />
+                </div>
+                <span asp-validation-for="ValidFrom" class="text-danger"></span>
+            </div>
+            <div class="form-group row">
+                <label asp-for="ValidTo" class="control-label col-sm-3"></label>
+                <div class="col-sm-9">
+                    <input asp-for="ValidTo" class="form-control" />
+                </div>
+                <span asp-validation-for="ValidTo" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col mb-1">
+            <div class="form-group">
+                <label asp-for="Details" class="control-label"></label>
+                <textarea asp-for="Details" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="Details" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -101,6 +101,27 @@ namespace BPR2_WebAPI.Controllers
             return product;
         }
 
+        [Route("/purchaseProduct/{productId}/{time}/{quantity}")]
+        [HttpPost]
+        public async Task<ActionResult<SoldProduct>> PostSoldProduct([FromRoute] long productId,[FromRoute] DateTime time, [FromRoute ]int quantity)
+        {
+            var exists = _context.SoldProducts.FirstOrDefault(p => p.ProductId == productId && p.Date.Date.Equals(time.Date));
+            if(exists != null)
+            {
+                exists.Quantity += quantity;
+                _context.Entry(exists).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+
+                return Ok(exists);
+            }
+
+            var sold = new SoldProduct() { ProductId = productId, Date = time, Quantity = quantity };
+            _context.SoldProducts.Add(sold);
+            await _context.SaveChangesAsync();
+
+            return Ok(sold);
+        }
+
         private bool ProductExists(long id)
         {
             return _context.Products.Any(e => e.Id == id);

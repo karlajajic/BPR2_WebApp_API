@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BPR2_WebAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20211117104944_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20211128160711_SoldProductsAddStoreName")]
+    partial class SoldProductsAddStoreName
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -103,14 +103,33 @@ namespace BPR2_WebAPI.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<long?>("WishlistId")
+                    b.HasKey("Id");
+
+                    b.ToTable("products");
+                });
+
+            modelBuilder.Entity("BPR2_WebAPI.Models.SoldProduct", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .UseIdentityColumn();
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("ProductId")
                         .HasColumnType("bigint");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StoreName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("WishlistId");
-
-                    b.ToTable("products");
+                    b.ToTable("sold_products");
                 });
 
             modelBuilder.Entity("BPR2_WebAPI.Models.Wishlist", b =>
@@ -131,16 +150,22 @@ namespace BPR2_WebAPI.Migrations
                     b.ToTable("wishlists");
                 });
 
-            modelBuilder.Entity("BPR2_WebAPI.Models.Product", b =>
+            modelBuilder.Entity("BPR2_WebAPI.Models.WishlistProducts", b =>
                 {
-                    b.HasOne("BPR2_WebAPI.Models.Wishlist", null)
-                        .WithMany("Products")
-                        .HasForeignKey("WishlistId");
-                });
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .UseIdentityColumn();
 
-            modelBuilder.Entity("BPR2_WebAPI.Models.Wishlist", b =>
-                {
-                    b.Navigation("Products");
+                    b.Property<long>("ProductId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("WishlistId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("wishlist_products");
                 });
 #pragma warning restore 612, 618
         }

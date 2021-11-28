@@ -1,0 +1,54 @@
+﻿@model BPR2_WebApp.Models.NewsletterModel
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit newsletter</h1>
+<hr />
+<div class="container">
+    <form asp-action="Edit" class="form-row">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="col mb-1">
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group row">
+                <label asp-for="ValidFrom" class="control-label col-sm-3"></label>
+                <div class="col-sm-9">
+                    <input asp-for="ValidFrom" class="form-control" />
+                </div>
+                <span asp-validation-for="ValidFrom" class="text-danger"></span>
+            </div>
+            <div class="form-group row">
+                <label asp-for="ValidTo" class="control-label col-sm-3"></label>
+                <div class="col-sm-9">
+                    <input asp-for="ValidTo" class="form-control" />
+                </div>
+                <span asp-validation-for="ValidTo" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col mb-1">
+            <div class="form-group">
+                <label asp-for="Details" class="control-label"></label>
+                <textarea asp-for="Details" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="Details" class="text-danger"></span>
+            </div>
+            <div class="row justify-content-md-center">
+                <div class="col col-md-auto">
+                    <div class="form-group">
+                        <input type="submit" value="Save" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

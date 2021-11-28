@@ -50,6 +50,61 @@ namespace BPR2_WebAPI.Controllers
             return wishlist;
         }
 
+        // GET api/<WhishlistsController>/5
+        [Route("/wishListProducts/{wishListId}/")]
+        [HttpGet]
+        public ActionResult<List<Product>> GetWishlistProducts([FromRoute] long wishListId)
+        {
+            var wproducts = _context.WishlistProducts.AsEnumerable().Where(p => p.WishlistId == wishListId).ToList();
+
+            if (wproducts == null)
+            {
+                return new List<Product>();
+            }
+
+            var products = new List<Product>();
+            wproducts.ForEach(wp =>
+            {
+               var product = _context.Products.AsEnumerable().FirstOrDefault(p => p.Id == wp.ProductId);
+               if (product != null)
+                   products.Add(product);
+            });
+
+            return products;
+        }
+
+        // POST api/<WhishlistsController>
+        [Route("/wishListProducts/{wishListId}/{productId}")]
+        [HttpPost]
+        public async Task<ActionResult<Wishlist>> PostWishlistProduct([FromRoute] long wishListId, [FromRoute] long productId)
+        {
+            var isThere = _context.WishlistProducts.AsEnumerable().FirstOrDefault(wp => (wp.ProductId == productId && wp.WishlistId == wishListId));
+            if (isThere != null)
+                return Ok();
+
+            _context.WishlistProducts.Add(new WishlistProducts { ProductId = productId, WishlistId = wishListId });
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        // DELETE api/<WhishlistsController>/5
+        [Route("/wishListProducts/{wishListId}/{productId}")]
+        [HttpDelete]
+        public async Task<ActionResult<WishlistProducts>> DeleteWishlist([FromRoute] long wishListId, [FromRoute] long productId)
+        {
+            var wishlistProduct = _context.WishlistProducts.AsEnumerable().FirstOrDefault(p => (p.WishlistId == wishListId && p.ProductId == productId));
+            if (wishlistProduct == null)
+            {
+                return NotFound();
+            }
+
+            _context.WishlistProducts.Remove(wishlistProduct);
+            await _context.SaveChangesAsync();
+
+            return wishlistProduct;
+        }
+
         // POST api/<WhishlistsController>
         [HttpPost]
         public async Task<ActionResult<Wishlist>> PostWishlist(Wishlist wishlist)

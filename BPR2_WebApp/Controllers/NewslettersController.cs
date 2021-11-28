@@ -1,27 +1,48 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using BPR2_WebApp.DTO;
+using BPR2_WebApp.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
 
 namespace BPR2_WebApp.Controllers
 {
     public class NewslettersController : Controller
     {
-        private static NewsletterApiHelper apiHelper = new NewsletterApiHelper();
+        private ApiHelper apiHelper = new ApiHelper();
+        private List<NewsletterModel> newsletters = new List<NewsletterModel>();
 
         public IActionResult Index()
         {
-            var newsletters = apiHelper.getNewsletters().Result;
+            List<NewsletterDTO> dTOs = apiHelper.GetNewsletters().Result;
+
+            dTOs.ForEach(n => newsletters.Add(new NewsletterModel() { Id = n.Id, Title = n.Title, Details = n.Details, ValidFrom = n.ValidFrom, ValidTo = n.ValidTo }));
             return View(newsletters);
         }
 
-        public IActionResult Details(int id)
+        public IActionResult Details(long? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var newsletter = newsletters.Find(n => n.Id.Equals(id));
+            if(newsletter != null)
+            {
+                return View(newsletter);
+            }
+
+            var dto = apiHelper.GetNewsletter(id.GetValueOrDefault()).Result;
+            if(dto == null)
+            {
+                return NotFound();
+            }
+            var model = new NewsletterModel() { Id = dto.Id, Title = dto.Title, Details = dto.Details, ValidFrom = dto.ValidFrom, ValidTo = dto.ValidTo };
+            newsletters.Add(model);
+
+            return View(model);
         }
 
         public IActionResult Create()
@@ -33,52 +54,108 @@ namespace BPR2_WebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(IFormCollection collection)
         {
-            try
+            var title = collection["Title"].ToString();
+            var details = collection["Details"].ToString();
+            var validTo = DateTime.Parse(collection["ValidTo"].ToString());
+            var validFrom = DateTime.Parse(collection["ValidFrom"].ToString());
+            var dto = new NewsletterDTO();
+
+            if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                dto = new NewsletterDTO() {Title = title, Details = details, ValidFrom = validFrom, ValidTo = validTo };
+                var result = apiHelper.PostNewsletter(dto).Result;
+                if (result != null)
+                    return RedirectToAction(nameof(Index));
             }
-            catch
-            {
-                return View();
-            }
+            var newsletter = new NewsletterModel() { Id = dto.Id, Title = dto.Title, Details = dto.Details, ValidFrom = dto.ValidFrom, ValidTo = dto.ValidTo };
+            newsletters.Add(newsletter);
+            return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Edit(int id)
+        public IActionResult Edit(long? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var newsletter = newsletters.Find(n => n.Id.Equals(id));
+            if (newsletter != null)
+            {
+                return View(newsletter);
+            }
+
+            var dto = apiHelper.GetNewsletter(id.GetValueOrDefault()).Result;
+            if (dto == null)
+            {
+                return NotFound();
+            }
+            var model = new NewsletterModel() { Id = dto.Id, Title = dto.Title, Details = dto.Details, ValidFrom = dto.ValidFrom, ValidTo = dto.ValidTo };
+            newsletters.Add(model);
+
+            return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, IFormCollection collection)
+        public IActionResult Edit(long id, IFormCollection collection)
         {
-            try
+            var title = collection["Title"].ToString();
+            var details = collection["Details"].ToString();
+            var validTo = DateTime.Parse(collection["ValidTo"].ToString());
+            var validFrom = DateTime.Parse(collection["ValidFrom"].ToString());
+            var dto = new NewsletterDTO();
+
+            if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                dto = new NewsletterDTO() { Id = id, Title = title, Details = details, ValidFrom = validFrom, ValidTo = validTo };
+                var result = apiHelper.UpdateNewsletter(id, dto).Result;
+                if(result != null)
+                    return RedirectToAction("Details", "Newsletters", new { id = id });
             }
-            catch
+            var oldNewsletter = newsletters.FirstOrDefault(n => n.Id == id);
+            if(oldNewsletter != null)
             {
-                return View();
+                newsletters.Remove(oldNewsletter);
+                var model = new NewsletterModel() { Id = dto.Id, Title = dto.Title, Details = dto.Details, ValidFrom = dto.ValidFrom, ValidTo = dto.ValidTo };
+                newsletters.Add(model);
             }
+
+            return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Delete(int id)
+        public IActionResult Delete(long id)
         {
-            return View();
+            var newsletter = newsletters.Find(n => n.Id.Equals(id));
+            if (newsletter != null)
+            {
+                return View(newsletter);
+            }
+
+            var dto = apiHelper.GetNewsletter(id).Result;
+            if (dto == null)
+            {
+                return NotFound();
+            }
+            var model = new NewsletterModel() { Id = dto.Id, Title = dto.Title, Details = dto.Details, ValidFrom = dto.ValidFrom, ValidTo = dto.ValidTo };
+            newsletters.Add(model);
+
+            return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(int id, IFormCollection collection)
+        public IActionResult Delete(long id, IFormCollection collection)
         {
-            try
+            var newsletter = apiHelper.RemoveNewsletter(id).Result;
+            if (newsletter == null)
             {
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
-            catch
-            {
-                return View();
-            }
+            var remove = newsletters.FirstOrDefault(p => p.Id == id);
+            if (remove != null)
+                newsletters.Remove(remove);
+            return RedirectToAction(nameof(Index));
         }
     }
 }
