@@ -117,12 +117,12 @@ namespace BPR2_WebAPI
             context.CustomerProfiles.AddRange(
                 new CustomerProfile
                 {
-                    ProfileId = 3,
+                    ProfileId = "3",
                     Username = "LenaB"
                 },
                 new CustomerProfile
                 {
-                    ProfileId = 4,
+                    ProfileId = "4",
                     Username = "KarlaJ"
                 }
             );
@@ -138,27 +138,27 @@ namespace BPR2_WebAPI
             context.Wishlists.AddRange(
                 new Wishlist
                 {
-                    ProfileId = 3,
+                    ProfileId = "3",
                     Name = "Lena healthy"
                 },
                 new Wishlist
                 {
-                    ProfileId = 3,
+                    ProfileId = "3",
                     Name = "Lena chocolate"
                 },
                 new Wishlist
                 {
-                    ProfileId = 3,
+                    ProfileId = "3",
                     Name = "Lena sodas"
                 },
                 new Wishlist
                 {
-                    ProfileId = 4,
+                    ProfileId = "4",
                     Name = "Karla chocolate"
                 },
                 new Wishlist
                 {
-                    ProfileId = 4,
+                    ProfileId = "4",
                     Name = "Karla sodas"
                 }
             );

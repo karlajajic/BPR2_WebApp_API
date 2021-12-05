@@ -30,7 +30,7 @@ namespace BPR2_WebAPI.Controllers
 
             if (credentials != null)
             {
-                var profile = _context.CustomerProfiles.FirstOrDefault(p => p.ProfileId == credentials.Id);
+                var profile = _context.CustomerProfiles.FirstOrDefault(p => p.ProfileId.Equals(credentials.Id));
                 if (profile != null)
                 {
                     return profile;
@@ -46,9 +46,9 @@ namespace BPR2_WebAPI.Controllers
 
         // GET api/<ProfilesController>/5
         [HttpGet("{id}")]
-        public ActionResult<CustomerProfile> GetProfile(long id)
+        public ActionResult<CustomerProfile> GetProfile(string id)
         {
-            var profile = _context.CustomerProfiles.FirstOrDefault(p => p.ProfileId == id);
+            var profile = _context.CustomerProfiles.FirstOrDefault(p => p.ProfileId.Equals(id));
             if (profile != null)
             {
                 return profile;
@@ -79,7 +79,7 @@ namespace BPR2_WebAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProfile(long id, [FromBody] CustomerProfile profile)
         {
-            if (id != profile.ProfileId)
+            if (!id.Equals(profile.Id))
             {
                 return BadRequest();
             }

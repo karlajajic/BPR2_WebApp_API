@@ -5,10 +5,11 @@ using System.Threading.Tasks;
 
 namespace BPR2_WebAPI.Models
 {
-    public class Wishlist
+    public class Store
     {
         public long Id { get; set; }
-        public string ProfileId { get; set; }
         public string Name { get; set; }
+        public string Address { get; set; }
+        public string Town { get; set; }
     }
 }

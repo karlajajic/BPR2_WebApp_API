@@ -4,14 +4,16 @@ using BPR2_WebAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BPR2_WebAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20211130162606_AddedStoreAndStoreProducts")]
+    partial class AddedStoreAndStoreProducts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,8 +46,8 @@ namespace BPR2_WebAPI.Migrations
                         .HasColumnType("bigint")
                         .UseIdentityColumn();
 
-                    b.Property<string>("ProfileId")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<long>("ProfileId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Username")
                         .HasColumnType("nvarchar(max)");
@@ -203,8 +205,8 @@ namespace BPR2_WebAPI.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ProfileId")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<long>("ProfileId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 

@@ -38,9 +38,9 @@ namespace BPR2_WebAPI.Controllers
         // GET api/<WhishlistsController>/5
         [Route("/customerWishLists/{customerId}")]
         [HttpGet]
-        public ActionResult<List<Wishlist>> GetCustomerWishlists([FromRoute] long customerId)
+        public ActionResult<List<Wishlist>> GetCustomerWishlists([FromRoute] string customerId)
         {
-            var wishlist = _context.Wishlists.AsEnumerable().Where(p => p.ProfileId == customerId).ToList();
+            var wishlist = _context.Wishlists.AsEnumerable().Where(p => p.ProfileId.Equals(customerId)).ToList();
 
             if (wishlist == null)
             {
@@ -82,7 +82,7 @@ namespace BPR2_WebAPI.Controllers
             if (isThere != null)
                 return Ok();
 
-            _context.WishlistProducts.Add(new WishlistProducts { ProductId = productId, WishlistId = wishListId });
+            _context.WishlistProducts.Add(new WishlistProduct { ProductId = productId, WishlistId = wishListId });
             await _context.SaveChangesAsync();
 
             return Ok();
@@ -91,7 +91,7 @@ namespace BPR2_WebAPI.Controllers
         // DELETE api/<WhishlistsController>/5
         [Route("/wishListProducts/{wishListId}/{productId}")]
         [HttpDelete]
-        public async Task<ActionResult<WishlistProducts>> DeleteWishlist([FromRoute] long wishListId, [FromRoute] long productId)
+        public async Task<ActionResult<WishlistProduct>> DeleteWishlist([FromRoute] long wishListId, [FromRoute] long productId)
         {
             var wishlistProduct = _context.WishlistProducts.AsEnumerable().FirstOrDefault(p => (p.WishlistId == wishListId && p.ProductId == productId));
             if (wishlistProduct == null)

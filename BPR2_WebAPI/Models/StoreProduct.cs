@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace BPR2_WebAPI.Models
 {
-    public class WishlistProducts
+    public class StoreProduct
     {
         public long Id { get; set; }
+        public long StoreId { get; set; }
         public long ProductId { get; set; }
-        public long WishlistId { get; set; }
     }
 }
