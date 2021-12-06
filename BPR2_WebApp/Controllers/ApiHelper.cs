@@ -87,7 +87,7 @@ namespace BPR2_WebApp.Controllers
         public async Task<List<SoldProductDTO>> GetSoldProductsByDate(DateTime date)
         {
             List<SoldProductDTO> soldProductDTOs = new List<SoldProductDTO>();
-            HttpResponseMessage response = await client.GetAsync("SoldProducts/"+date.ToString());
+            HttpResponseMessage response = await client.GetAsync("SoldProducts/"+date.Year+"-"+date.Month+"-"+date.Day);
 
             if (response.IsSuccessStatusCode)
             {
@@ -106,6 +106,18 @@ namespace BPR2_WebApp.Controllers
                 products = await response.Content.ReadAsAsync<List<ProductDTO>>();
             }
             return products;
+        }
+
+        public async Task<List<ReviewDTO>> GetReviews()
+        {
+            List<ReviewDTO> reviews = new List<ReviewDTO>();
+            HttpResponseMessage response = await client.GetAsync("Reviews/");
+
+            if (response.IsSuccessStatusCode)
+            {
+                reviews = await response.Content.ReadAsAsync<List<ReviewDTO>>();
+            }
+            return reviews;
         }
 
     }

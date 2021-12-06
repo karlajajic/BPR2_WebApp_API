@@ -12,91 +12,56 @@ namespace BPR2_WebApp.Controllers
     public class SoldProductsController : Controller
     {
         private ApiHelper apiHelper = new ApiHelper();
-        private List<SoldProductModel> models = new List<SoldProductModel>();
-
-        public IActionResult Index()
+        
+        [HttpPost]
+        public ActionResult Load(IFormCollection collection)
         {
-            List<SoldProductDTO> dTOs = apiHelper.GetSoldProductsByDate(DateTime.Now).Result;
+            var d = DateTime.Parse(collection["Date"].ToString());
+            if (d == null)
+            {
+                d = DateTime.Now;
+            }
+
+            List<SoldProductDTO> dTOs = apiHelper.GetSoldProductsByDate(d).Result;
             List<ProductDTO> products = apiHelper.GetProducts().Result;
+
+            var models = new List<SoldProductModel>();
 
             dTOs.ForEach(p =>
             {
                 var product = products.FirstOrDefault(product => p.ProductId == product.Id);
-                if(product != null)
+                if (product != null)
                 {
                     var sp = new SoldProductModel() { Id = p.Id, Date = p.Date, ProductBarcode = product.Barcode, ProductName = product.Name, Quantity = p.Quantity, StoreName = p.StoreName };
+                    models.Add(sp);
                 }
             });
-            return View(models);
+
+            var model = new SoldProductsModel() { Date = d, Products = models };
+            return View("Index", model);
         }
 
-        // GET: SoldProducts/Details/5
-        public ActionResult Details(int id)
+        public IActionResult Index()
         {
-            return View();
-        }
+            var d = DateTime.Now;
 
-        // GET: SoldProducts/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
+            List<SoldProductDTO> dTOs = apiHelper.GetSoldProductsByDate(d).Result;
+            List<ProductDTO> products = apiHelper.GetProducts().Result;
 
-        // POST: SoldProducts/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
+            var models = new List<SoldProductModel>();
+
+            dTOs.ForEach(p =>
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+                var product = products.FirstOrDefault(product => p.ProductId == product.Id);
+                if (product != null)
+                {
+                    var sp = new SoldProductModel() { Id = p.Id, Date = p.Date, ProductBarcode = product.Barcode, ProductName = product.Name, Quantity = p.Quantity, StoreName = p.StoreName };
+                    models.Add(sp);
+                }
+            });
 
-        // GET: SoldProducts/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: SoldProducts/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: SoldProducts/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: SoldProducts/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            var model = new SoldProductsModel() { Date = d, Products = models };
+            return View("Index", model);
         }
     }
 }
