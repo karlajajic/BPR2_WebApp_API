@@ -36,7 +36,7 @@ namespace BPR2_WebAPI.Controllers
 
         // POST api/<ReviewsController>
         [HttpPost]
-        public async Task<ActionResult<Review>> Post(Review review)
+        public async Task<ActionResult<Review>> PostReview(Review review)
         {
             if (review == null)
             {

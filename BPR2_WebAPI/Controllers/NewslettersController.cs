@@ -23,14 +23,14 @@ namespace BPR2_WebAPI.Controllers
 
         // GET: api/<NewslettersController>
         [HttpGet]
-        public ActionResult<List<Newsletter>> Get()
+        public ActionResult<List<Newsletter>> GetNewsletters()
         {
             return _context.Newsletters.AsEnumerable().ToList();
         }
 
         // GET api/<NewslettersController>/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Newsletter>> Get(int id)
+        public async Task<ActionResult<Newsletter>> GetNewsletter(int id)
         {
             var newsletter = await _context.Newsletters.FindAsync(id);
 
@@ -44,7 +44,7 @@ namespace BPR2_WebAPI.Controllers
 
         // POST api/<NewslettersController>
         [HttpPost]
-        public async Task<ActionResult<Newsletter>> Post(Newsletter newsletter)
+        public async Task<ActionResult<Newsletter>> PostNewsletter(Newsletter newsletter)
         {
             _context.Newsletters.Add(newsletter);
             await _context.SaveChangesAsync();
@@ -55,7 +55,7 @@ namespace BPR2_WebAPI.Controllers
 
         // PUT api/<NewslettersController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, Newsletter newsletter)
+        public async Task<IActionResult> PutNewsletter(int id, Newsletter newsletter)
         {
             if (id != newsletter.Id)
             {

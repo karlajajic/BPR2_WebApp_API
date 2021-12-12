@@ -1,4 +1,4 @@
-﻿@model IEnumerable<BPR2_WebApp.Models.ReviewModel>
+﻿@model BPR2_WebApp.Models.ReviewsModel
 
 @{
     ViewData["Title"] = "Index";
@@ -9,25 +9,37 @@
 
 <br />
 
+<form asp-action="Load">
+    <div class="form-group row">
+        <div class="col-sm-11">
+            <div class="form-group row">
+                <label class="control-label col-sm-2 align-self-center">Store Name: </label>
+                <input asp-for="StoreName" id="storeName" class="form-control col-sm-4" type="search" />
+            </div>
+        </div>
+        <input type="submit" value="Load" class="btn btn-primary" />
+    </div>
+</form>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.StoreName)
+                Store Name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Username)
+                Username
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Rating)
+                Rating
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Comment)
+                Comment
             </th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.Reviews) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.StoreName)
@@ -36,7 +48,21 @@
                 @Html.DisplayFor(modelItem => item.Username)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Rating)
+                @if (item.Rating > 0)
+                {
+                    <div class="row" style="align-self:center">
+                        <div style="float: left;">
+                            @for (var i = 1; i <= item.Rating; i++)
+                            {
+                                <span class="star"></span>
+                            }
+                            @for (var i = (item.Rating + 1); i <= 5; i++)
+                            {
+                                <span class="starb"></span>
+                            }
+                        </div>
+                    </div>
+                }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Comment)

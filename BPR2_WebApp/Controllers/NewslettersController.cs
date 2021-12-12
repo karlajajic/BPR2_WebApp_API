@@ -1,13 +1,16 @@
 ﻿using BPR2_WebApp.DTO;
 using BPR2_WebApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace BPR2_WebApp.Controllers
 {
+    [Authorize]
     public class NewslettersController : Controller
     {
         private ApiHelper apiHelper = new ApiHelper();
@@ -156,6 +159,12 @@ namespace BPR2_WebApp.Controllers
             if (remove != null)
                 newsletters.Remove(remove);
             return RedirectToAction(nameof(Index));
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

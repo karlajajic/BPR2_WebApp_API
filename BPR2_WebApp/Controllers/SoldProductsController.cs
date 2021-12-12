@@ -1,14 +1,17 @@
 ﻿using BPR2_WebApp.DTO;
 using BPR2_WebApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace BPR2_WebApp.Controllers
 {
+    [Authorize]
     public class SoldProductsController : Controller
     {
         private ApiHelper apiHelper = new ApiHelper();
@@ -62,6 +65,12 @@ namespace BPR2_WebApp.Controllers
 
             var model = new SoldProductsModel() { Date = d, Products = models };
             return View("Index", model);
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

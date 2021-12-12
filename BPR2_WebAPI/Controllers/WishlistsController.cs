@@ -91,7 +91,7 @@ namespace BPR2_WebAPI.Controllers
         // DELETE api/<WhishlistsController>/5
         [Route("/wishListProducts/{wishListId}/{productId}")]
         [HttpDelete]
-        public async Task<ActionResult<WishlistProduct>> DeleteWishlist([FromRoute] long wishListId, [FromRoute] long productId)
+        public async Task<ActionResult<WishlistProduct>> DeleteWishlistProduct([FromRoute] long wishListId, [FromRoute] long productId)
         {
             var wishlistProduct = _context.WishlistProducts.AsEnumerable().FirstOrDefault(p => (p.WishlistId == wishListId && p.ProductId == productId));
             if (wishlistProduct == null)
