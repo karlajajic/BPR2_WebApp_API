@@ -42,6 +42,28 @@ namespace BPR2_WebAPI.Controllers
             return newsletter;
         }
 
+        // GET api/<NewslettersController>/5
+        [HttpGet("/validNewsletters")]
+        public ActionResult<List<ValidNewsletter>> GetValidNewsletters()
+        {
+            var newsletters = _context.Newsletters.AsEnumerable().ToList();
+            var now = DateTime.Now.Millisecond;
+            var validNewsletters = new List<ValidNewsletter>();
+
+            newsletters.ForEach(n =>
+            {
+                if(n.ValidFrom.Millisecond<= now && n.ValidTo.Millisecond>= now)
+                {
+                    validNewsletters.Add(
+                        new ValidNewsletter 
+                        { Id = n.Id, Details = n.Details, Title = n.Title, ValidFromMiliseconds = n.ValidFrom.Millisecond, ValidToMiliseconds = n.ValidTo.Millisecond });
+                }
+
+            });
+
+            return validNewsletters;
+        }
+
         // POST api/<NewslettersController>
         [HttpPost]
         public async Task<ActionResult<Newsletter>> PostNewsletter(Newsletter newsletter)
