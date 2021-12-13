@@ -16,5 +16,8 @@ namespace BPR2_WebAPI.Models
         [Column(TypeName = "decimal(18, 2)")]
         public double Price { get; set; }
         public string Brand { get; set;  }
+        public int Aisle { get; set; }
+        public int Regal { get; set; }
+        public int Shelf { get; set; }
     }
 }

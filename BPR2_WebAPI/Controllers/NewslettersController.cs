@@ -47,18 +47,17 @@ namespace BPR2_WebAPI.Controllers
         public ActionResult<List<ValidNewsletter>> GetValidNewsletters()
         {
             var newsletters = _context.Newsletters.AsEnumerable().ToList();
-            var now = DateTime.Now.Millisecond;
+            var now = DateTime.Now;
             var validNewsletters = new List<ValidNewsletter>();
 
             newsletters.ForEach(n =>
             {
-                if(n.ValidFrom.Millisecond<= now && n.ValidTo.Millisecond>= now)
+                if (n.ValidFrom.CompareTo(now) <= 0 && n.ValidTo.CompareTo(now) >= 0)
                 {
                     validNewsletters.Add(
-                        new ValidNewsletter 
-                        { Id = n.Id, Details = n.Details, Title = n.Title, ValidFromMiliseconds = n.ValidFrom.Millisecond, ValidToMiliseconds = n.ValidTo.Millisecond });
+                        new ValidNewsletter
+                        { Id = n.Id, Details = n.Details, Title = n.Title, Interval = n.ValidFrom.ToShortDateString() + "-" + n.ValidTo.ToShortDateString()});
                 }
-
             });
 
             return validNewsletters;
