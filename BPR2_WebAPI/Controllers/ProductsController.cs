@@ -41,6 +41,20 @@ namespace BPR2_WebAPI.Controllers
             return product;
         }
 
+        // GET: api/Products/5
+        [HttpGet("/barcode/{barcode}")]
+        public async Task<ActionResult<Product>> GetProductByBarcode(long barcode)
+        {
+            var product = await _context.Products.FirstOrDefaultAsync(p => p.Barcode == barcode);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            return product;
+        }
+
         // PUT: api/Products/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.

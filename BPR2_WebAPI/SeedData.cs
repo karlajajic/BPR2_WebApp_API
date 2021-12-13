@@ -16,8 +16,6 @@ namespace BPR2_WebAPI
                 serviceProvider.GetRequiredService<DbContextOptions<DataContext>>()))
             {
                 SeedProducts(context);
-                SeedCredentials(context);
-                SeedCustomerProfiles(context);
                 SeedWishlists(context);
                 SeedNewsletters(context);
 
@@ -72,58 +70,6 @@ namespace BPR2_WebAPI
                     Category = "Tea",
                     Brand = "Harney & Sons",
                     Price = 18
-                }
-            );
-        }
-
-        private static void SeedCredentials(DataContext context)
-        {
-            if (context.Credentials.Any())
-            {
-                return;   
-            }
-
-            context.Credentials.AddRange(
-                new Credentials
-                {
-                    Code = 1142016674416790,
-                    IsEmployee = true
-                },
-                new Credentials
-                {
-                    Code = 8435528168398317,
-                    IsEmployee = true
-                },
-                new Credentials
-                {
-                    Code = 6171645260387105,
-                    IsEmployee = false
-                },
-                new Credentials
-                {
-                    Code = 4271733177659343,
-                    IsEmployee = false
-                }
-            );
-        }
-
-        private static void SeedCustomerProfiles(DataContext context)
-        {
-            if (context.CustomerProfiles.Any())
-            {
-                return;
-            }
-
-            context.CustomerProfiles.AddRange(
-                new CustomerProfile
-                {
-                    ProfileId = "3",
-                    Username = "LenaB"
-                },
-                new CustomerProfile
-                {
-                    ProfileId = "4",
-                    Username = "KarlaJ"
                 }
             );
         }

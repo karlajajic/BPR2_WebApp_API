@@ -11,8 +11,6 @@ namespace BPR2_WebAPI.Models
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
         }
-        public DbSet<Credentials> Credentials { get; set; }
-        public DbSet<CustomerProfile> CustomerProfiles { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<SoldProduct> SoldProducts { get; set; }
         public DbSet<Wishlist> Wishlists { get; set; }
@@ -24,8 +22,6 @@ namespace BPR2_WebAPI.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Credentials>().ToTable("credentials");
-            modelBuilder.Entity<CustomerProfile>().ToTable("customer_profiles");
             modelBuilder.Entity<Product>().ToTable("products");
             modelBuilder.Entity<SoldProduct>().ToTable("sold_products");
             modelBuilder.Entity<Wishlist>().ToTable("wishlists");
