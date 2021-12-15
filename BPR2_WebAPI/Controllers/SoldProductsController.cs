@@ -32,11 +32,11 @@ namespace BPR2_WebAPI.Controllers
             return _context.SoldProducts.ToList().FindAll(p => p.Date.Date.Equals(date.Date));
         }
 
-        [Route("{store}/{productId}/{time}/{quantity}")]
+        [Route("{store}/{productId}/{quantity}")]
         [HttpPost]
-        public async Task<ActionResult<SoldProduct>> PostSoldProduct([FromRoute] string store, [FromRoute] long productId, [FromRoute] DateTime time, [FromRoute] int quantity)
+        public async Task<ActionResult<SoldProduct>> PostSoldProduct([FromRoute] string store, [FromRoute] long productId, [FromRoute] int quantity)
         {
-            var exists = _context.SoldProducts.FirstOrDefault(p => p.ProductId == productId && p.Date.Date.Equals(time.Date));
+            var exists = _context.SoldProducts.FirstOrDefault(p => p.ProductId == productId && p.Date.Date.Equals(DateTime.Now));
             if (exists != null)
             {
                 exists.Quantity += quantity;
@@ -46,7 +46,7 @@ namespace BPR2_WebAPI.Controllers
                 return Ok(exists);
             }
 
-            var sold = new SoldProduct() { ProductId = productId, Date = time, Quantity = quantity, StoreName = store };
+            var sold = new SoldProduct() { ProductId = productId, Date = DateTime.Now, Quantity = quantity, StoreName = store };
             _context.SoldProducts.Add(sold);
             await _context.SaveChangesAsync();
 
