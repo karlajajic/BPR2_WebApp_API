@@ -36,7 +36,7 @@ namespace BPR2_WebAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<SoldProduct>> PostSoldProduct([FromRoute] string store, [FromRoute] long productId, [FromRoute] int quantity)
         {
-            var exists = _context.SoldProducts.FirstOrDefault(p => p.ProductId == productId && p.Date.Date.Equals(DateTime.Now));
+            var exists = _context.SoldProducts.FirstOrDefault(p => p.ProductId == productId && p.Date.Date.Equals(DateTime.Now.Date));
             if (exists != null)
             {
                 exists.Quantity += quantity;
